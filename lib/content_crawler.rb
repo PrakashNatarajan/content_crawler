@@ -37,15 +37,15 @@ class ContentCrawler
   end
 
   def get_select_elements(xpath=nil, options={})
-      select_text_values(@page.xpath(xpath), options) if not xpath.nil?
+      select_collection(@page.xpath(xpath), options) if not xpath.nil?
   end
 
   def get_iframe_embed_elements(xpath=nil, options={})
-      iframe_embed_srcs(@page.xpath(xpath), options) if not xpath.nil?
+      iframe_embed_collection(@page.xpath(xpath), options) if not xpath.nil?
   end
 
-  def get_video_elements(xpath=nil, options={})
-      video_srcs_types(@page.xpath(xpath), options) if not xpath.nil?
+  def get_audio_video_elements(xpath=nil, options={})
+      audio_video_collection(@page.xpath(xpath), options) if not xpath.nil?
   end
 
   def close_browser

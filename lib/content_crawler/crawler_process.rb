@@ -48,20 +48,7 @@ module CrawlerProcess
        data[:text] = link.text.strip
        links << data
     end
-    links_attr(links, options)
-  end
-
-  def links_attr(links, options={})
-    case options[:format]
-      when "texts_hrefs"
-        links
-      when "only_hrefs"
-        links.map{|link| link[:href]}
-      when "only_texts"
-        links.map{|link| link[:text]}
-      else
-        links
-    end
+    collection_attr(links, options)
   end
 
   def store_remote_image(remote_image_url, image_store_dir)
@@ -90,7 +77,7 @@ module CrawlerProcess
     local_image
   end
 
-  def select_text_values(select_detail, options={})
+  def select_collection(select_detail, options={})
       selects = []
        select_detail.each do |select|
            hash = {}
@@ -98,23 +85,10 @@ module CrawlerProcess
            hash[:value] = select.attributes["value"].text.strip
            selects << hash
        end
-      select_attr(selects, options)
+      collection_attr(selects, options)
   end
 
-  def select_attr(selects, options={})
-    case options[:format]
-      when "texts_values"
-        selects
-      when "only_values"
-        selects.map{|select| select[:value]}
-      when "only_texts"
-        selects.map{|select| select[:text]}
-      else
-      selects
-    end
-  end
-
-  def iframe_embed_srcs(ifrm_embd_detail, options={})
+  def iframe_embed_collection(ifrm_embd_detail, options={})
       ifrm_embds = []
       ifrm_embd_detail.each do |ifrmembd|
         hash = {}
@@ -122,43 +96,42 @@ module CrawlerProcess
         hash[:src] = ifrmembd.value.strip
         ifrm_embds << hash
       end
-      iframe_embed_attr(ifrm_embds, options)
+      collection_attr(ifrm_embds, options)
   end
 
-  def iframe_embed_attr(ifrm_embds, options)
-    case options[:format]
-      when "texts_srcs"
-        ifrm_embds
-      when "only_srcs"
-        ifrm_embds.map{|ifrmembd| ifrmembd[:src]}
-      when "only_texts"
-        ifrm_embds.map{|ifrmembd| ifrmembd[:text]}
-      else
-        ifrm_embds
-    end
-  end
-
-  def video_srcs_types(video_detail, options={})
-      videos = []
-      video_detail.each do |video|
+  def audio_video_collection(audio_video_detail, options={})
+      auvid_collection = []
+      audio_video_detail.each do |auvid|
         hash = {}
-        hash[:src] = video.attributes["src"].value.strip
-        hash[:type] = video.attributes["type"].value.strip
-        videos << hash
+        hash[:src] = auvid.attributes["src"].value.strip
+        hash[:type] = auvid.attributes["type"].value.strip
+        auvid_collection << hash
       end
-      videos_attr(videos, options)
+      collection_attr(auvid_collection, options)
   end
 
-  def videos_attr(videos, options)
+  def collection_attr(collection, options)
     case options[:format]
       when "srcs_types"
-        videos
+        collection
+      when "texts_values"
+        collection
+      when "texts_srcs"
+        collection
+      when "texts_hrefs"
+        collection
       when "only_srcs"
-        videos.map{|video| video[:src]}
+        collection.map{|collobjt| collobjt[:src]}
       when "only_types"
-        videos.map{|video| video[:type]}
+        collection.map{|collobjt| collobjt[:type]}
+      when "only_values"
+        collection.map{|collobjt| collobjt[:value]}
+      when "only_texts"
+        collection.map{|collobjt| collobjt[:text]}
+      when "only_hrefs"
+        collection.map{|collobjt| collobjt[:href]}
       else
-        videos
+        collection
     end
   end
 
