@@ -110,6 +110,27 @@ module CrawlerProcess
       collection_attr(auvid_collection, options)
   end
 
+  def object_collection(object_detail, options={})
+       objects = []
+       object_detail.each do |object|
+           hash = {}
+           hash[:text] = object.text.strip
+           hash[:value] = object.value.strip
+           objects << hash
+       end
+      collection_attr(objects, options)
+  end
+
+  def datalist_collection(datalist_detail, options={})
+       datalists = []
+       datalist_detail.each do |datalist|
+           hash = {}
+           hash[:value] = datalist.attributes["value"].value.strip
+           datalists << hash
+       end
+      collection_attr(datalists, options)
+  end
+
   def collection_attr(collection, options)
     case options[:format]
       when "srcs_types"

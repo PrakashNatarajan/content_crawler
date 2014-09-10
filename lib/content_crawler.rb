@@ -48,6 +48,14 @@ class ContentCrawler
       audio_video_collection(@page.xpath(xpath), options) if not xpath.nil?
   end
 
+  def get_object_elements(xpath=nil, options={})
+      object_collection(@page.xpath(xpath), options) if not xpath.nil?
+  end
+
+  def get_datalist_elements(xpath=nil, options={})
+      datalist_collection(@page.xpath(xpath), options) if not xpath.nil?
+  end
+
   def close_browser
       super
   end
