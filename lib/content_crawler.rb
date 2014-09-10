@@ -40,6 +40,10 @@ class ContentCrawler
       select_text_values(@page.xpath(xpath), options) if not xpath.nil?
   end
 
+  def get_iframe_embed_tag(xpath=nil, options={})
+      iframe_embed_srcs(@page.xpath(xpath), options) if not xpath.nil?
+  end
+
   def close_browser
       super
   end

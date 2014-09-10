@@ -114,6 +114,32 @@ module CrawlerProcess
     end
   end
 
+  def iframe_embed_srcs(ifrm_embd_detail, options={})
+      ifrm_embds = []
+      ifrm_embd_detail.each do |ifrmembd|
+        hash = {}
+        hash[:text] = ifrmembd.text.strip
+        hash[:src] = ifrmembd.value.strip
+        ifrm_embds << hash
+      end
+      iframe_embed_attr(ifrm_embds, options)
+  end
+
+  def iframe_embed_attr(ifrm_embds, options)
+    case options[:format]
+      when "texts_srcs"
+        ifrm_embds
+      when "only_srcs"
+        ifrm_embds.map{|ifrmembd| ifrmembd[:src]}
+      when "only_texts"
+        ifrm_embds.map{|ifrmembd| ifrmembd[:text]}
+      else
+        ifrm_embds
+    end
+  end
+
+
+
   def close_browser
     @browser.close if not @browser.nil?
     @headless.destroy if not @headless.nil?
