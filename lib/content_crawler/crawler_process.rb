@@ -48,10 +48,10 @@ module CrawlerProcess
        data[:text] = link.text.strip
        links << data
     end
-    choose_links(links, options)
+    links_attr(links, options)
   end
 
-  def choose_links(links, options={})
+  def links_attr(links, options={})
     case options[:format]
       when "texts_hrefs"
         links
@@ -98,10 +98,10 @@ module CrawlerProcess
            hash[:value] = select.attributes["value"].text.strip
            selects << hash
        end
-      choose_select(selects, options)
+      select_attr(selects, options)
   end
 
-  def choose_select(selects, options={})
+  def select_attr(selects, options={})
     case options[:format]
       when "texts_values"
         selects
