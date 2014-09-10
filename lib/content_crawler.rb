@@ -36,12 +36,16 @@ class ContentCrawler
       store_remote_image(@page.xpath(xpath), image_store_dir) if not xpath.nil?
   end
 
-  def get_select_tag(xpath=nil, options={})
+  def get_select_elements(xpath=nil, options={})
       select_text_values(@page.xpath(xpath), options) if not xpath.nil?
   end
 
-  def get_iframe_embed_tag(xpath=nil, options={})
+  def get_iframe_embed_elements(xpath=nil, options={})
       iframe_embed_srcs(@page.xpath(xpath), options) if not xpath.nil?
+  end
+
+  def get_video_elements(xpath=nil, options={})
+      video_srcs_types(@page.xpath(xpath), options) if not xpath.nil?
   end
 
   def close_browser

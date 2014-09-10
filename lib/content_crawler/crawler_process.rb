@@ -138,7 +138,29 @@ module CrawlerProcess
     end
   end
 
+  def video_srcs_types(video_detail, options={})
+      videos = []
+      video_detail.each do |video|
+        hash = {}
+        hash[:src] = video.attributes["src"].value.strip
+        hash[:type] = video.attributes["type"].value.strip
+        videos << hash
+      end
+      videos_attr(videos, options)
+  end
 
+  def videos_attr(videos, options)
+    case options[:format]
+      when "srcs_types"
+        videos
+      when "only_srcs"
+        videos.map{|video| video[:src]}
+      when "only_types"
+        videos.map{|video| video[:type]}
+      else
+        videos
+    end
+  end
 
   def close_browser
     @browser.close if not @browser.nil?
