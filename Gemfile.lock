@@ -1,15 +1,11 @@
-PATH
-  remote: .
-  specs:
-    content_crawler (0.0.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
     browser (0.6.0)
     childprocess (0.5.3)
       ffi (~> 1.0, >= 1.0.11)
-    domain_name (0.5.20)
+    diff-lcs (1.2.5)
+    domain_name (0.5.21)
       unf (>= 0.0.5, < 1.0.0)
     ffi (1.9.3)
     headless (1.0.2)
@@ -32,30 +28,39 @@ GEM
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     ntlm-http (0.1.1)
-    rake (10.3.2)
+    rspec (3.1.0)
+      rspec-core (~> 3.1.0)
+      rspec-expectations (~> 3.1.0)
+      rspec-mocks (~> 3.1.0)
+    rspec-core (3.1.2)
+      rspec-support (~> 3.1.0)
+    rspec-expectations (3.1.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.1.0)
+    rspec-mocks (3.1.0)
+      rspec-support (~> 3.1.0)
+    rspec-support (3.1.0)
     rubyzip (1.1.6)
-    selenium-webdriver (2.42.0)
-      childprocess (>= 0.5.0)
+    selenium-webdriver (2.43.0)
+      childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
-      websocket (~> 1.0.4)
+      websocket (~> 1.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.6)
     watir-webdriver (0.6.10)
       selenium-webdriver (>= 2.18.0)
     webrobots (0.1.1)
-    websocket (1.0.7)
+    websocket (1.2.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   browser
-  bundler (~> 1.7)
-  content_crawler!
   headless
   mechanize
   nokogiri
-  rake (~> 10.0)
+  rspec
   watir-webdriver

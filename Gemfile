@@ -8,5 +8,6 @@ gem 'watir-webdriver'
 gem 'headless'
 gem 'nokogiri'
 gem 'mechanize'
+gem 'rspec'
 
-gemspec
+#gemspec

@@ -1,21 +1,24 @@
 require 'fileutils'
 require 'net/https'
 require 'uri'
-
+require 'nokogiri'
+require 'headless'
+require 'watir-webdriver'
+require 'mechanize'
 
 module CrawlerProcess
 
-  def initialize(crawler, base_url, timeout=300, user_agent=nil)
+  def initialize(crawler, base_url, options={:timeout=>300, :user_agent=>nil})
       @base_url = base_url
       case crawler
 	      when "selenium_webdriver_with_headless"
 		       @headless = Headless.new
 		       @headless.start
-           watir_web_browser(timeout)
+           watir_web_browser(options[:timeout])
         when "selenium_webdriver_without_headless"
-           watir_web_browser(timeout)
+           watir_web_browser(options[:timeout])
 	      when "mechanize_parser"
-           mechanize_parser(user_agent)
+           mechanize_parser(options[:user_agent])
 	      else
 		      puts "Please select any one of the parser(selenium_webdriver_with_headless, selenium_webdriver_without_headless, mechanize_parser) to crawl content"
       end

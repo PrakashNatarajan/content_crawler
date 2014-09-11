@@ -6,10 +6,11 @@ module ContentCrawler
   # Your code goes here...
 end
 =end
-class ContentCrawler
+module ContentCrawler
+  class Crawler
   include CrawlerProcess
 
-  def initialize(crawler, base_url, timeout=300, user_agent=nil)
+  def initialize(crawler, base_url, options={:timeout=>300, :user_agent=>nil})
 	    super
   end
 
@@ -60,4 +61,5 @@ class ContentCrawler
       super
   end
 
+  end
 end
