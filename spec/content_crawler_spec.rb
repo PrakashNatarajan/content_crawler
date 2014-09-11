@@ -40,14 +40,14 @@ RSpec.describe ContentCrawler::Crawler do
     expect(content_crawler.get_iframe_embed_elements("//iframe/@src", {:format=>"only_srcs"})).to eq(["http://www.tutorialspoint.com/html/menu.htm"])
     expect(content_crawler.get_iframe_embed_elements("//iframe/@src")).to eq([{:src => "http://www.tutorialspoint.com/html/menu.htm"}])
   end
-=begin
+
   it "started to store the remote image into local system" do
     content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file://#{Dir.pwd}/public/html_test.html", {:user_agent => "Mac Safari"})
     content_crawler.get_parser_page("file://#{Dir.pwd}/public/html_test.html")
     expect(content_crawler.get_remote_image("//img/@src")).to eq(["#{Dir.home}/crawled_images/2462582861_31d51f157c_b.jpg"])
     expect(content_crawler.get_remote_image("//img/@src", "#{Dir.home}/Desktop/crawled_images")).to eq(["#{Dir.home}/Desktop/crawled_images/2462582861_31d51f157c_b.jpg"])
   end
-=end
+
   it "start to get video source urls" do 
     content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file://#{Dir.pwd}/public/html_test.html", {:user_agent => "Mac Safari"})
     content_crawler.get_parser_page("file://#{Dir.pwd}/public/html_test.html")
