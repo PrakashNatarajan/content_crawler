@@ -41,4 +41,11 @@ RSpec.describe ContentCrawler::Crawler do
     expect(content_crawler.get_iframe_embed_elements("//iframe/@src")).to eq([{:src => "http://www.tutorialspoint.com/html/menu.htm"}])
   end
 
+  it "started to store the remote image into local system" do
+    content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file:///home/prakashn/Practise/html_practise.html", {:user_agent => "Mac Safari"})
+    content_crawler.get_parser_page("file:///home/prakashn/Practise/html_practise.html")
+    expect(content_crawler.get_remote_image("//img/@src")).to eq(["#{Dir.home}/crawled_images/2462582861_31d51f157c_b.jpg"])
+    expect(content_crawler.get_remote_image("//img/@src", "/home/prakashn/Desktop/crawled_images")).to eq(["/home/prakashn/Desktop/crawled_images/2462582861_31d51f157c_b.jpg"])
+  end
+
 end

@@ -54,30 +54,38 @@ module CrawlerProcess
     collection_attr(links, options)
   end
 
-  def store_remote_image(remote_image_url, image_store_dir)
-    image_store_dir = "#{Dir.pwd}/crawled_images" if image_store_dir.nil?
-    remote_image_url = "#{@base_url}#{remote_image_url}" if not remote_image_url.include?("http")
-    if not Dir.exist?("#{image_store_dir}")
-      Dir.mkdir("#{image_store_dir}")
-    end
-    url = URI.parse(remote_image_url)
-    response = Net::HTTP.get_response(url)
-    if response.is_a?(Net::HTTPSuccess)
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true if url.scheme == "https"
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      http.start do
-        http.request_get(url.path) do |res|
-          File.open("#{image_store_dir}/#{File.basename(url.path)}",'wb') do |file|
-            file.write(res.body)
-          end
+  def store_remote_image(image_detail, image_store_dir)
+      image_store_dir = check_local_dir(image_store_dir)
+      remote_image_urls = iframe_embed_collection(image_detail, {:format => "only_srcs"})
+      local_images = []
+      remote_image_urls.each do |image_url|
+        image_url = "#{@base_url}#{image_url}" if not image_url.include?("http")
+        url = URI.parse(image_url)
+        response = Net::HTTP.get_response(url)
+        if response.is_a?(Net::HTTPSuccess)
+            http = Net::HTTP.new(url.host, url.port)
+            http.use_ssl = true if url.scheme == "https"
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            http.start do
+              http.request_get(url.path) do |res|
+                File.open("#{image_store_dir}/#{File.basename(url.path)}",'wb') do |file|
+                    file.write(res.body)
+                end
+              end
+            end
+            local_image = "#{image_store_dir}/#{File.basename(url.path)}"
+            local_images << local_image
         end
       end
-      local_image = "#{image_store_dir}/#{File.basename(url.path)}"
-    else
-      local_image  = ""
-    end
-    local_image
+      local_images
+  end
+
+  def check_local_dir(image_store_dir)
+      image_store_dir = "#{Dir.home}/crawled_images" if image_store_dir.nil?
+      if not Dir.exist?("#{image_store_dir}")
+        Dir.mkdir("#{image_store_dir}")
+      end
+      image_store_dir
   end
 
   def select_collection(select_detail, options={})
