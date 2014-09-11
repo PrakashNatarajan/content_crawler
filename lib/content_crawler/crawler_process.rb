@@ -47,8 +47,8 @@ module CrawlerProcess
     parser_links = [parser_links].flatten.uniq
     parser_links.each do |link|
        data = {}
-       data[:href] = link.attributes["href"].value.strip
-       data[:text] = link.text.strip
+       data[:href] = link.attributes["href"].nil? ? " " : link.attributes["href"].value.strip
+       data[:text] = link.text.nil? ? " " : link.text.strip
        links << data
     end
     collection_attr(links, options)
@@ -95,7 +95,6 @@ module CrawlerProcess
       ifrm_embds = []
       ifrm_embd_detail.each do |ifrmembd|
         hash = {}
-        hash[:text] = ifrmembd.text.strip
         hash[:src] = ifrmembd.value.strip
         ifrm_embds << hash
       end
@@ -135,6 +134,7 @@ module CrawlerProcess
   end
 
   def collection_attr(collection, options)
+    collection = collection.uniq.compact
     case options[:format]
       when "srcs_types"
         collection
@@ -145,15 +145,15 @@ module CrawlerProcess
       when "texts_hrefs"
         collection
       when "only_srcs"
-        collection.map{|collobjt| collobjt[:src]}
+        collection.map{|collobjt| collobjt[:src]}.compact
       when "only_types"
-        collection.map{|collobjt| collobjt[:type]}
+        collection.map{|collobjt| collobjt[:type]}.compact
       when "only_values"
-        collection.map{|collobjt| collobjt[:value]}
+        collection.map{|collobjt| collobjt[:value]}.compact
       when "only_texts"
-        collection.map{|collobjt| collobjt[:text]}
+        collection.map{|collobjt| collobjt[:text]}.compact
       when "only_hrefs"
-        collection.map{|collobjt| collobjt[:href]}
+        collection.map{|collobjt| collobjt[:href]}.compact
       else
         collection
     end

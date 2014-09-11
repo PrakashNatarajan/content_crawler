@@ -21,7 +21,7 @@ module ContentCrawler
       elsif (not @agent.nil? and not crawl_url.nil?)
           @page = @agent.get(crawl_url).parser if not crawl_url.nil?
       else
-          puts "Please select any one of the parser(selenium_webdriver_with_headless, selenium_webdriver_without_headless, mechanize_parser) and pass the crawl_url to crawl content"
+          "Please select any one of the parser(selenium_webdriver_with_headless, selenium_webdriver_without_headless, mechanize_parser) and pass the crawl_url to crawl content"
       end
   end
 
@@ -29,7 +29,7 @@ module ContentCrawler
       @page.xpath(xpath).text.strip if not xpath.nil?
   end
 
-  def get_all_links(xpath=nil, options={})
+  def get_link_elements(xpath=nil, options={})
       collection_links(@page.xpath(xpath), options) if not xpath.nil?
   end
 
