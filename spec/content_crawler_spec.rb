@@ -40,12 +40,46 @@ RSpec.describe ContentCrawler::Crawler do
     expect(content_crawler.get_iframe_embed_elements("//iframe/@src", {:format=>"only_srcs"})).to eq(["http://www.tutorialspoint.com/html/menu.htm"])
     expect(content_crawler.get_iframe_embed_elements("//iframe/@src")).to eq([{:src => "http://www.tutorialspoint.com/html/menu.htm"}])
   end
-
+=begin
   it "started to store the remote image into local system" do
     content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file://#{Dir.pwd}/public/html_test.html", {:user_agent => "Mac Safari"})
     content_crawler.get_parser_page("file://#{Dir.pwd}/public/html_test.html")
     expect(content_crawler.get_remote_image("//img/@src")).to eq(["#{Dir.home}/crawled_images/2462582861_31d51f157c_b.jpg"])
     expect(content_crawler.get_remote_image("//img/@src", "#{Dir.home}/Desktop/crawled_images")).to eq(["#{Dir.home}/Desktop/crawled_images/2462582861_31d51f157c_b.jpg"])
+  end
+=end
+  it "start to get video source urls" do 
+    content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file://#{Dir.pwd}/public/html_test.html", {:user_agent => "Mac Safari"})
+    content_crawler.get_parser_page("file://#{Dir.pwd}/public/html_test.html")
+    expect(content_crawler.get_audio_video_elements("//video/source")).to eq([{:src=>"http://www.w3schools.com/movie.ogg", :type=>"video/ogg"}, {:src=>"http://www.w3schools.com/movie.mp4", :type=>"video/mp4"}])
+    expect(content_crawler.get_audio_video_elements("//video/source", {:format=>"srcs_types"})).to eq([{:src=>"http://www.w3schools.com/movie.ogg", :type=>"video/ogg"}, {:src=>"http://www.w3schools.com/movie.mp4", :type=>"video/mp4"}])
+    expect(content_crawler.get_audio_video_elements("//video/source", {:format=>"only_srcs"})).to eq(["http://www.w3schools.com/movie.ogg", "http://www.w3schools.com/movie.mp4"])
+    expect(content_crawler.get_audio_video_elements("//video/source", {:format=>"only_types"})).to eq(["video/ogg", "video/mp4"])
+  end
+
+  it "start to get audio source urls" do 
+    content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file://#{Dir.pwd}/public/html_test.html", {:user_agent => "Mac Safari"})
+    content_crawler.get_parser_page("file://#{Dir.pwd}/public/html_test.html")
+    expect(content_crawler.get_audio_video_elements("//audio/source")).to eq([{:src=>"http://www.w3schools.com/horse.mp3", :type=>"audio/mpeg"}, {:src=>"http://www.w3schools.com/horse.ogg", :type=>"audio/ogg"}])
+    expect(content_crawler.get_audio_video_elements("//audio/source", {:format=>"srcs_types"})).to eq([{:src=>"http://www.w3schools.com/horse.mp3", :type=>"audio/mpeg"}, {:src=>"http://www.w3schools.com/horse.ogg", :type=>"audio/ogg"}])
+    expect(content_crawler.get_audio_video_elements("//audio/source", {:format=>"only_srcs"})).to eq(["http://www.w3schools.com/horse.mp3", "http://www.w3schools.com/horse.ogg"])
+    expect(content_crawler.get_audio_video_elements("//audio/source", {:format=>"only_types"})).to eq(["audio/mpeg", "audio/ogg"])
+  end
+
+  it "start to get object source urls" do 
+    content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file://#{Dir.pwd}/public/html_test.html", {:user_agent => "Mac Safari"})
+    content_crawler.get_parser_page("file://#{Dir.pwd}/public/html_test.html")
+    expect(content_crawler.get_object_elements("//object/@data")).to eq([{:text=>"http://www.youtube.com/v/XGSy3_Czz8k", :value=>"http://www.youtube.com/v/XGSy3_Czz8k"}, {:text=>"http://www.youtube.com/v/XGSy3_Czz9k", :value=>"http://www.youtube.com/v/XGSy3_Czz9k"}])
+    expect(content_crawler.get_object_elements("//object/@data", {:format=>"texts_values"})).to eq([{:text=>"http://www.youtube.com/v/XGSy3_Czz8k", :value=>"http://www.youtube.com/v/XGSy3_Czz8k"}, {:text=>"http://www.youtube.com/v/XGSy3_Czz9k", :value=>"http://www.youtube.com/v/XGSy3_Czz9k"}])
+    expect(content_crawler.get_object_elements("//object/@data", {:format=>"only_texts"})).to eq(["http://www.youtube.com/v/XGSy3_Czz8k", "http://www.youtube.com/v/XGSy3_Czz9k"])
+    expect(content_crawler.get_object_elements("//object/@data", {:format=>"only_values"})).to eq(["http://www.youtube.com/v/XGSy3_Czz8k", "http://www.youtube.com/v/XGSy3_Czz9k"])
+  end
+
+  it "start to get datalist values" do 
+    content_crawler = ContentCrawler::Crawler.new("mechanize_parser", "file://#{Dir.pwd}/public/html_test.html", {:user_agent => "Mac Safari"})
+    content_crawler.get_parser_page("file://#{Dir.pwd}/public/html_test.html")
+    expect(content_crawler.get_datalist_elements("//datalist/option")).to eq([{:value=>"Internet Explorer"}, {:value=>"Firefox"}, {:value=>"Chrome"}, {:value=>"Opera"}, {:value=>"Safari"}])
+    expect(content_crawler.get_datalist_elements("//datalist/option", {:format=>"only_values"})).to eq(["Internet Explorer", "Firefox", "Chrome", "Opera", "Safari"])
   end
 
 end
