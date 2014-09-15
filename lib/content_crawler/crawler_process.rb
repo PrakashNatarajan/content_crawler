@@ -142,15 +142,9 @@ module CrawlerProcess
   end
 
   def collection_attr(collection, options)
-    collection = collection.uniq.compact
+    collection = [collection].flatten.compact.uniq
     case options[:format]
-      when "srcs_types"
-        collection
-      when "texts_values"
-        collection
-      when "texts_srcs"
-        collection
-      when "texts_hrefs"
+      when "srcs_types", "texts_values", "texts_srcs", "texts_hrefs"
         collection
       when "only_srcs"
         collection.map{|collobjt| collobjt[:src]}.compact
