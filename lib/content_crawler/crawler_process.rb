@@ -7,7 +7,7 @@ require 'watir-webdriver'
 require 'mechanize'
 
 module CrawlerProcess
-
+# Initialize the crawler process
   def initialize(crawler, base_url, options={:timeout=>300, :user_agent=>nil})
       @base_url = base_url
       case crawler
@@ -23,7 +23,7 @@ module CrawlerProcess
 		      puts "Please select any one of the parser(selenium_webdriver_with_headless, selenium_webdriver_without_headless, mechanize_parser) to crawl content"
       end
   end
-
+# Web driver watir browser, which will be opening a browser
   def watir_web_browser(timeout)
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.timeout = timeout
@@ -31,7 +31,7 @@ module CrawlerProcess
       @browser.goto(@base_url)
       @browser
   end
-
+#Mechanize parser
   def mechanize_parser(user_agent=nil)
       if user_agent.nil?
         @agent = Mechanize.new{|a| a.ssl_version, a.verify_mode = 'SSLv3', OpenSSL::SSL::VERIFY_NONE}
@@ -41,7 +41,7 @@ module CrawlerProcess
       #@page = @agent.get(@base_url).parser
       @agent
   end
-
+# To get the anchor tag details
   def collection_links(parser_links, options={})
     links = Array.new
     parser_links = [parser_links].flatten.uniq
@@ -53,7 +53,7 @@ module CrawlerProcess
     end
     collection_attr(links, options)
   end
-
+# To get image
   def store_remote_image(image_detail, image_store_dir)
       image_store_dir = check_local_dir(image_store_dir)
       remote_image_urls = iframe_embed_collection(image_detail, {:format => "only_srcs"})
@@ -79,7 +79,7 @@ module CrawlerProcess
       end
       local_images
   end
-
+#To save images in dir
   def check_local_dir(image_store_dir)
       image_store_dir = "#{Dir.home}/crawled_images" if image_store_dir.nil?
       if not Dir.exist?("#{image_store_dir}")
@@ -87,7 +87,7 @@ module CrawlerProcess
       end
       image_store_dir
   end
-
+# To get select tag details
   def select_collection(select_detail, options={})
       selects = []
        select_detail.each do |select|
@@ -98,7 +98,7 @@ module CrawlerProcess
        end
       collection_attr(selects, options)
   end
-
+# To get iframe links
   def iframe_embed_collection(ifrm_embd_detail, options={})
       ifrm_embds = []
       ifrm_embd_detail.each do |ifrmembd|
@@ -108,7 +108,7 @@ module CrawlerProcess
       end
       collection_attr(ifrm_embds, options)
   end
-
+# To get audio video details
   def audio_video_collection(audio_video_detail, options={})
       auvid_collection = []
       audio_video_detail.each do |auvid|
@@ -119,7 +119,7 @@ module CrawlerProcess
       end
       collection_attr(auvid_collection, options)
   end
-
+# to Get object details
   def object_collection(object_detail, options={})
        objects = []
        object_detail.each do |object|
@@ -130,7 +130,7 @@ module CrawlerProcess
        end
       collection_attr(objects, options)
   end
-
+# to get datalists
   def datalist_collection(datalist_detail, options={})
        datalists = []
        datalist_detail.each do |datalist|
@@ -140,7 +140,7 @@ module CrawlerProcess
        end
       collection_attr(datalists, options)
   end
-
+# To get particular attribute
   def collection_attr(collection, options)
     collection = [collection].flatten.compact.uniq
     case options[:format]
@@ -160,7 +160,7 @@ module CrawlerProcess
         collection
     end
   end
-
+# close browser
   def close_browser
     @browser.close if not @browser.nil?
     @headless.destroy if not @headless.nil?
